@@ -145,14 +145,17 @@ ai-chat-widget/
 - **Code Generator**: Generates embed code with your settings
 
 ### Backend (Next.js API Routes)
-- `POST /api/threads`: Creates a new OpenAI thread
-- `POST /api/messages`: Sends user message to assistant, gets response
+- `POST /api/threads`: Creates a new OpenAI thread (rate limited)
+- `POST /api/messages`: Sends user message to assistant, gets response (rate limited)
+- **Rate Limiting**: 100 thread creations/min, 30 messages/min per IP
+- **Input Validation**: Message length limits, timeout protection (30s max)
 
 ### Widget Script (`embed.js`)
 - Standalone JavaScript that loads on user websites
 - Creates a floating chat bubble
 - Communicates with your backend API securely
 - No dependencies, fully self-contained
+- HTML escaping for XSS protection
 
 ## Environment Variables
 
@@ -206,16 +209,21 @@ Response: {
 ## Security
 
 ✅ **What's Secure:**
-- API keys stored only on Vercel (server-side)
-- Widget script contains no secrets
-- Communication via HTTPS
-- CORS headers configured for safety
-- HTML escaping to prevent XSS
+- API keys stored only on Vercel (server-side), never exposed to client
+- Widget script contains no secrets or hardcoded sensitive data
+- Communication via HTTPS (enforced by Vercel)
+- CORS headers configured for cross-origin safety
+- HTML escaping to prevent XSS attacks
+- Rate limiting on all API endpoints (protect against abuse)
+- Input validation (message length limits, type checking)
+- Timeout protection (30s max per request)
+- IP-based rate limiting to prevent API key abuse
 
 ⚠️ **Considerations:**
-- Each user needs their own Vercel deployment
+- Each user needs their own Vercel deployment and OpenAI API key
 - OpenAI API costs scale with usage (standard OpenAI pricing)
-- Thread storage managed by OpenAI
+- Thread storage managed by OpenAI (see their data retention policies)
+- Rate limits can be adjusted in code if needed for your use case
 
 ## Troubleshooting
 
