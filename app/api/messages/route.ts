@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { client, assistantId } from '@/lib/openai'
+import { client as getClient, getAssistantId } from '@/lib/openai'
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,6 +12,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const client = getClient()
+
     // Add message to thread
     await client.beta.threads.messages.create(threadId, {
       role: 'user',
@@ -20,14 +22,18 @@ export async function POST(request: NextRequest) {
 
     // Run assistant
     const run = await client.beta.threads.runs.create(threadId, {
-      assistant_id: assistantId,
+      assistant_id: getAssistantId(),
     })
 
     // Wait for run to complete
     let runStatus = run
     while (runStatus.status === 'queued' || runStatus.status === 'in_progress') {
       await new Promise((resolve) => setTimeout(resolve, 500))
-      runStatus = await client.beta.threads.runs.retrieve(threadId, run.id)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      runStatus = await (client.beta.threads.runs.retrieve as any)(
+        threadId,
+        run.id
+      )
     }
 
     if (runStatus.status !== 'completed') {

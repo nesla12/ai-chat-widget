@@ -1,19 +1,25 @@
 import OpenAI from 'openai'
 
-// Initialize OpenAI client
-const apiKey = process.env.OPENAI_API_KEY
-const assistantId = process.env.OPENAI_ASSISTANT_ID
+// Lazy initialization to allow builds without env vars
+let client: OpenAI | null = null
 
-if (!apiKey) {
-  throw new Error('OPENAI_API_KEY environment variable is not set')
+const getClient = (): OpenAI => {
+  if (!client) {
+    const apiKey = process.env.OPENAI_API_KEY
+    if (!apiKey) {
+      throw new Error('OPENAI_API_KEY environment variable is not set')
+    }
+    client = new OpenAI({ apiKey })
+  }
+  return client
 }
 
-if (!assistantId) {
-  throw new Error('OPENAI_ASSISTANT_ID environment variable is not set')
+export const getAssistantId = (): string => {
+  const assistantId = process.env.OPENAI_ASSISTANT_ID
+  if (!assistantId) {
+    throw new Error('OPENAI_ASSISTANT_ID environment variable is not set')
+  }
+  return assistantId
 }
 
-const client = new OpenAI({
-  apiKey,
-})
-
-export { client, assistantId }
+export { getClient as client }

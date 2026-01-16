@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { client } from '@/lib/openai'
+import { client as getClient } from '@/lib/openai'
 
 export async function POST(request: NextRequest) {
   try {
+    const client = getClient()
     // Create a new thread
     const thread = await client.beta.threads.create()
 
