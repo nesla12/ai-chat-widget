@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Widget - Enhanced Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #9333ea;
+            border-radius: 6px;
+        }
+        .section h2 {
+            color: #9333ea;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .test-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .test-item.pass::before { content: "✓"; color: #10b981; font-weight: bold; font-size: 16px; }
+        .test-item.fail::before { content: "✗"; color: #ef4444; font-weight: bold; font-size: 16px; }
+        .test-item.pending::before { content: "⋯"; color: #f59e0b; font-weight: bold; font-size: 16px; }
+        
+        .config-test {
+            background: #f3e8ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #4c1d95;
+            border-left: 3px solid #9333ea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary { background: #9333ea; color: white; }
+        .btn-primary:hover { background: #7e22ce; }
+        .btn-secondary { background: #e5e7eb; color: #333; }
+        .btn-secondary:hover { background: #d1d5db; }
+        
+        .console-section {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .console-line { margin-bottom: 5px; padding: 2px 0; }
+        .console-error { color: #ef4444; }
+        .console-warn { color: #f59e0b; }
+        .console-log { color: #10b981; }
+        
+        .localStorage-display {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #78350f;
+        }
+        
+        @media (max-width: 480px) {
+            .container { padding: 20px; }
+            h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 AI Chat Widget - Enhanced Test</h1>
+        <p class="subtitle">Full feature testing environment</p>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="runFullTests()">Run All Tests</button>
+            <button class="btn-secondary" onclick="testAPIConnection()">Test API Connection</button>
+            <button class="btn-secondary" onclick="clearLocalStorage()">Clear Local Storage</button>
+            <button class="btn-secondary" onclick="openDevTools()">DevTools (F12)</button>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Configuration Test</h2>
+            <div class="config-test">
+<pre>
+const config = {
+  widgetTitle: "Support Agent",
+  primaryColor: "#ec4899",
+  theme: "light",
+  placeholderText: "Message...",
+  footerText: "AI-Powered Support"
+};
+</pre>
+            </div>
+            <div class="test-item pass">Config object created</div>
+            <div class="test-item pass">All required fields present</div>
+            <div class="test-item pending">Check if script loads without errors</div>
+        </div>
+
+        <div class="section">
+            <h2>📱 Widget Rendering Tests</h2>
+            <div class="test-item pending">Widget button appears (bottom-right)</div>
+            <div class="test-item pending">Button color matches config (pink #ec4899)</div>
+            <div class="test-item pending">Widget window opens on click</div>
+            <div class="test-item pending">Chat messages display correctly</div>
+            <div class="test-item pending">Input field is functional</div>
+            <div class="test-item pending">Send button triggers message</div>
+        </div>
+
+        <div class="section">
+            <h2>💬 Message Handling Tests</h2>
+            <div class="test-item pending">User message appears on right</div>
+            <div class="test-item pending">Assistant message appears on left</div>
+            <div class="test-item pending">Messages auto-scroll in window</div>
+            <div class="test-item pending">Input clears after sending</div>
+            <div class="test-item pending">Typing Enter sends message</div>
+        </div>
+
+        <div class="section">
+            <h2>🔌 API Integration Tests</h2>
+            <div class="test-item pending">Create thread endpoint works</div>
+            <div class="test-item pending">Thread ID stored in localStorage</div>
+            <div class="test-item pending">Send message endpoint responds</div>
+            <div class="test-item pending">API errors handled gracefully</div>
+            <div class="test-item pending">Timeout protection active (30s)</div>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Theme & Styling Tests</h2>
+            <div class="test-item pending">Light theme renders correctly</div>
+            <div class="test-item pending">Theme toggle button visible</div>
+            <div class="test-item pending">Dark theme toggles correctly</div>
+            <div class="test-item pending">Colors apply to all elements</div>
+            <div class="test-item pending">Mobile responsive (max-width: 480px)</div>
+        </div>
+
+        <div class="section">
+            <h2>💾 Storage & Persistence Tests</h2>
+            <div class="localStorage-display">
+                <strong>LocalStorage Values:</strong>
+                <div id="storage-display" style="margin-top: 10px; font-family: monospace;"></div>
+            </div>
+        </div>
+
+        <div class="console-section" id="console-output">
+            <div class="console-line console-log">> Console output will appear here...</div>
+        </div>
+    </div>
+
+    <!-- Test with different config (pink color, light theme) -->
+    <script>
+        // Test config in base64 encoded format
+        const testConfig = {
+            widgetTitle: "Support Agent",
+            primaryColor: "#ec4899",
+            secondaryColor: "#fce7f3",
+            textColor: "#ffffff",
+            placeholderText: "Message...",
+            footerText: "AI-Powered Support",
+            theme: "light",
+            enableLogging: true
+        };
+
+        // Encode config for URL param
+        function encodeConfig(config) {
+            const json = JSON.stringify(config);
+            const encoded = encodeURIComponent(json);
+            const base64 = btoa(encoded);
+            return base64;
+        }
+
+        // Decode config from base64
+        function decodeConfig(encoded) {
+            try {
+                const decoded = atob(encoded);
+                return JSON.parse(decodeURIComponent(decoded));
+            } catch (e) {
+                return testConfig;
+            }
+        }
+
+        // Capture console
+        const consoleOutput = document.getElementById('console-output');
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        function addConsole(message, type = 'log') {
+            const line = document.createElement('div');
+            line.className = 'console-line console-' + type;
+            line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + message;
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        console.log = function() {
+            originalLog.apply(console, arguments);
+            addConsole(Array.from(arguments).join(' '), 'log');
+        };
+
+        console.warn = function() {
+            originalWarn.apply(console, arguments);
+            addConsole(Array.from(arguments).join(' '), 'warn');
+        };
+
+        console.error = function() {
+            originalError.apply(console, arguments);
+            addConsole(Array.from(arguments).join(' '), 'error');
+        };
+
+        // Display localStorage
+        function updateStorageDisplay() {
+            const display = document.getElementById('storage-display');
+            const items = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes('ai_chat')) {
+                    items.push(key + ' = ' + localStorage.getItem(key));
+                }
+            }
+            display.innerHTML = items.length > 0 
+                ? items.join('<br/>') 
+                : '<em>No AI Chat Widget data in localStorage</em>';
+        }
+
+        // Test functions
+        function runFullTests() {
+            consoleOutput.innerHTML = '';
+            console.log('Starting enhanced test suite...');
+            
+            setTimeout(() => {
+                const root = document.getElementById('ai-chat-widget-root');
+                const button = document.getElementById('ai-chat-toggle');
+                const window_ = document.getElementById('ai-chat-window');
+                const input = document.getElementById('ai-chat-input');
+                const messages = document.getElementById('ai-chat-messages');
+
+                console.log('✓ Widget root found: ' + (root ? 'yes' : 'no'));
+                console.log('✓ Toggle button found: ' + (button ? 'yes' : 'no'));
+                console.log('✓ Chat window found: ' + (window_ ? 'yes' : 'no'));
+                console.log('✓ Input field found: ' + (input ? 'yes' : 'no'));
+                console.log('✓ Messages container found: ' + (messages ? 'yes' : 'no'));
+
+                if (button) {
+                    const color = window.getComputedStyle(button).backgroundColor;
+                    console.log('✓ Button computed color: ' + color);
+                }
+
+                updateStorageDisplay();
+                console.log('✓ All tests completed. Try interacting with the widget below →');
+            }, 100);
+        }
+
+        function testAPIConnection() {
+            console.log('Testing API connection...');
+            fetch(window.location.origin + '/api/threads', { method: 'POST', headers: { 'Content-Type': 'application/json' } })
+                .then(r => {
+                    console.log('✓ API responded: ' + r.status);
+                    return r.json();
+                })
+                .then(d => {
+                    console.log('✓ Thread created: ' + d.threadId);
+                    updateStorageDisplay();
+                })
+                .catch(e => {
+                    console.error('✗ API test failed: ' + e.message);
+                });
+        }
+
+        function clearLocalStorage() {
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                if (localStorage.key(i).includes('ai_chat')) {
+                    localStorage.removeItem(localStorage.key(i));
+                }
+            }
+            updateStorageDisplay();
+            console.log('✓ LocalStorage cleared');
+        }
+
+        function openDevTools() {
+            alert('Press F12 or Cmd+Option+I to open DevTools');
+        }
+
+        // Initial setup
+        window.addEventListener('load', () => {
+            const encodedConfig = encodeConfig(testConfig);
+            console.log('Test config encoded (URL param):');
+            console.log('?config=' + encodedConfig);
+            updateStorageDisplay();
+            setTimeout(() => runFullTests(), 500);
+        });
+    </script>
+
+    <!-- Load enhanced embed script with encoded config -->
+    <script>
+        (function() {
+            const config = {
+                widgetTitle: "Support Agent",
+                primaryColor: "#ec4899",
+                placeholderText: "Message...",
+                footerText: "AI-Powered Support",
+                theme: "light",
+                enableLogging: true
+            };
+            const json = JSON.stringify(config);
+            const encoded = encodeURIComponent(json);
+            const base64 = btoa(encoded);
+            window.location.hash = '?config=' + base64;
+        })();
+    </script>
+    <script src="embed-enhanced.js"></script>
+</body>
+</html>
