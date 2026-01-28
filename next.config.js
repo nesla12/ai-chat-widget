@@ -44,7 +44,7 @@ const nextConfig = {
       },
       // Embed script - allow cross-origin, no CSP restriction
       {
-        source: '/embed*.js',
+        source: '/embed-enhanced.js',
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
