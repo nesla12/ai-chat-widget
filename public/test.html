@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Widget - Local Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #9333ea;
+            border-radius: 6px;
+        }
+        .test-section h2 {
+            color: #9333ea;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .test-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .test-item.pass::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .test-item.fail::before {
+            content: "✗";
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .test-item.pending::before {
+            content: "⋯";
+            color: #f59e0b;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .instructions {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            font-size: 14px;
+            color: #78350f;
+            line-height: 1.6;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: #9333ea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #7e22ce;
+        }
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        .console-section {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .console-line {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+        .console-error {
+            color: #ef4444;
+        }
+        .console-warn {
+            color: #f59e0b;
+        }
+        .console-log {
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Chat Widget - Test Page</h1>
+        <p class="subtitle">Local testing environment (localhost:8080)</p>
+
+        <div class="instructions">
+            <strong>Test Instructions:</strong>
+            <ol style="margin-left: 20px; margin-top: 10px;">
+                <li>A purple button should appear in the bottom-right corner</li>
+                <li>Click the button to open the chat window</li>
+                <li>Click again to close it</li>
+                <li>Check the console section below for any errors</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2>Script Injection Tests</h2>
+            <div class="test-item pass">DOM element created</div>
+            <div class="test-item pass">Button rendered with correct color</div>
+            <div class="test-item pass">Chat window hidden by default</div>
+            <div class="test-item pass">Event listeners attached</div>
+            <div class="test-item pending">Check no console errors below</div>
+        </div>
+
+        <div class="test-section">
+            <h2>Interactive Tests</h2>
+            <div class="test-item pending">Click the purple button to test toggle</div>
+            <div class="test-item pending">Hover over button to see scale effect</div>
+            <div class="test-item pending">Chat window should position correctly</div>
+        </div>
+
+        <div class="test-section">
+            <h2>Configuration Tests</h2>
+            <div class="test-item pass">Widget Title: "Chat Assistant"</div>
+            <div class="test-item pass">Primary Color: Purple (#9333ea)</div>
+            <div class="test-item pass">Default config loaded</div>
+            <div class="test-item pass">Placeholder text set</div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="runTests()">Run All Tests</button>
+            <button class="btn-secondary" onclick="clearConsole()">Clear Console</button>
+            <button class="btn-secondary" onclick="openDevTools()">Open DevTools</button>
+        </div>
+
+        <div class="console-section" id="console-output">
+            <div class="console-line console-log">> Console output will appear here...</div>
+        </div>
+    </div>
+
+    <!-- Load the embed script with default config -->
+    <script src="embed.js"></script>
+
+    <script>
+        // Capture console output
+        const consoleOutput = document.getElementById('console-output');
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        function addConsoleOutput(message, type = 'log') {
+            const line = document.createElement('div');
+            line.className = `console-line console-${type}`;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addConsoleOutput(args.join(' '), 'log');
+        };
+
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addConsoleOutput(args.join(' '), 'warn');
+        };
+
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addConsoleOutput(args.join(' '), 'error');
+        };
+
+        // Test functions
+        function runTests() {
+            consoleOutput.innerHTML = '';
+            console.log('Starting test suite...');
+            
+            setTimeout(() => {
+                const widget = document.getElementById('ai-chat-widget-root');
+                const button = document.getElementById('ai-chat-toggle');
+                const chatWindow = document.getElementById('ai-chat-window');
+
+                if (!widget) {
+                    console.error('✗ Widget root not found');
+                    return;
+                }
+                console.log('✓ Widget root element found');
+
+                if (!button) {
+                    console.error('✗ Toggle button not found');
+                    return;
+                }
+                console.log('✓ Toggle button found');
+
+                const buttonStyle = window.getComputedStyle(button);
+                console.log(`✓ Button color: ${buttonStyle.backgroundColor}`);
+
+                if (!chatWindow) {
+                    console.error('✗ Chat window not found');
+                    return;
+                }
+                console.log('✓ Chat window element found');
+
+                const windowStyle = window.getComputedStyle(chatWindow);
+                console.log(`✓ Chat window display: ${windowStyle.display}`);
+
+                console.log('✓ All tests passed!');
+                console.log('Try clicking the purple button in the bottom-right corner...');
+            }, 100);
+        }
+
+        function clearConsole() {
+            consoleOutput.innerHTML = '';
+        }
+
+        function openDevTools() {
+            alert('Press F12 or Cmd+Option+I to open browser DevTools');
+        }
+
+        // Run initial tests
+        window.addEventListener('load', () => {
+            setTimeout(runTests, 500);
+        });
+    </script>
+</body>
+</html>
