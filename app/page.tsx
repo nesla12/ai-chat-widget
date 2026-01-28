@@ -6,12 +6,12 @@ import Preview from '@/components/Preview'
 import EmbedCodeGenerator from '@/components/EmbedCodeGenerator'
 
 const defaultConfig: WidgetConfig = {
-  widgetName: 'AI Assistant',
+  widgetName: 'Social Coach by Tristan',
   logoUrl: '',
-  primaryColor: '#0066CC',
-  secondaryColor: '#F0F4FF',
+  primaryColor: '#806429',
+  secondaryColor: '#e8dcc8',
   welcomeMessage: 'Hello! How can I help you today?',
-  subtitle: 'Powered by AI',
+  subtitle: 'Dein persönlicher KI-Assistent',
 }
 
 export default function Home() {

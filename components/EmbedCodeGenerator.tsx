@@ -34,7 +34,7 @@ export default function EmbedCodeGenerator({
   }
 
   const encodedConfig = encodeConfig()
-  const embedCode = `<!-- AI Chat Widget -->
+  const embedCode = `<!-- Social Coach by Tristan Widget -->
 <script src="${domain}/embed-enhanced.js?config=${encodedConfig}"></script>`
 
   const copyToClipboard = () => {
